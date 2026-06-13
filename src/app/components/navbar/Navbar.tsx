@@ -1,13 +1,16 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import Image from "next/image";
 import { Search, Bell, Sun, Moon, Menu, X, ChevronDown, User, Shield, LogOut } from "lucide-react";
 import { useSidebar } from "../navigation/SidebarContext";
+import { useToast } from "../feedback/ToastContext";
 import { TOP_NAV_LINKS } from "../navigation/config";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
+  const { showToast } = useToast();
+  const focusRing =
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-cyber-yellow dark:focus-visible:ring-offset-cyber-black";
   const {
     theme,
     toggleTheme,
@@ -58,8 +61,8 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-cyber-border bg-white/80 dark:bg-cyber-dark/85 backdrop-blur-md transition-all duration-300">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 dark:border-cyber-border bg-white/90 dark:bg-cyber-dark/90 backdrop-blur-xl shadow-[0_1px_0_rgba(15,23,42,0.04)] dark:shadow-[0_1px_0_rgba(234,179,8,0.08)] transition-all duration-300">
+      <div className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-4">
           
           {/* Logo / Editorial Brand */}
@@ -67,16 +70,8 @@ export default function Navbar() {
             onClick={() => handleViewChange("home")}
             className="flex cursor-pointer items-center space-x-3 text-slate-900 dark:text-white shrink-0 group"
           >
-            <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-md bg-slate-900 dark:bg-transparent group-hover:scale-105 transition-transform duration-200">
-              <Image
-                src="/logo.png"
-                alt="Asia University Rankings logo"
-                width={64}
-                height={64}
-                quality={100}
-                unoptimized
-                className="object-contain"
-              />
+            <div className="flex h-10 w-10 items-center justify-center border-2 border-slate-900 bg-slate-900 text-white font-serif text-xl font-bold dark:border-cyber-yellow dark:bg-transparent dark:text-cyber-yellow dark:shadow-[0_0_10px_rgba(234,179,8,0.2)] group-hover:scale-105 transition-transform duration-200">
+              A
             </div>
             <div className="hidden sm:block">
               <h1 className="font-serif text-md font-bold leading-tight tracking-tight dark:font-sans dark:tracking-wider">
@@ -121,7 +116,7 @@ export default function Navbar() {
           {/* Search bar in center */}
           <form
             onSubmit={handleSearchSubmit}
-            className="flex-grow max-w-md hidden lg:block"
+            className="flex-grow max-w-md hidden md:block"
           >
             <div className="relative">
               <input
@@ -140,8 +135,10 @@ export default function Navbar() {
             
             {/* Theme Toggle Button */}
             <button
+              type="button"
               onClick={toggleTheme}
-              className="p-2 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-cyber-yellow transition-colors hover:bg-slate-100 dark:hover:bg-cyber-gray rounded-full"
+              aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+              className={`p-2 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-cyber-yellow transition-colors hover:bg-slate-100 dark:hover:bg-cyber-gray rounded-full ${focusRing}`}
               title={theme === "dark" ? "Light Editorial Theme" : "Dark Futuristic Theme"}
             >
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -150,8 +147,10 @@ export default function Navbar() {
             {/* Notification Bell Dropdown */}
             <div className="relative" ref={notifRef}>
               <button
+                type="button"
                 onClick={() => setShowNotifMenu(!showNotifMenu)}
-                className="p-2 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-cyber-yellow transition-colors hover:bg-slate-100 dark:hover:bg-cyber-gray rounded-full relative"
+                aria-label="Open notifications"
+                className={`p-2 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-cyber-yellow transition-colors hover:bg-slate-100 dark:hover:bg-cyber-gray rounded-full relative ${focusRing}`}
               >
                 <Bell className="h-4 w-4" />
                 <span className="absolute top-1 right-1 flex h-2 w-2">
@@ -222,8 +221,10 @@ export default function Navbar() {
             {/* Profile Avatar Dropdown */}
             <div className="relative border-l border-slate-200 dark:border-slate-800 pl-3" ref={profileRef}>
               <button
+                type="button"
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center space-x-1.5 focus:outline-none group"
+                aria-label="Open profile menu"
+                className={`flex items-center space-x-1.5 focus:outline-none group ${focusRing}`}
               >
                 <div className="h-8 w-8 rounded-full border border-slate-350 dark:border-cyber-yellow bg-slate-900 flex items-center justify-center text-white text-xs font-bold overflow-hidden shadow-sm dark:shadow-[0_0_8px_rgba(234,179,8,0.1)]">
                   {/* Mock user initial or image */}
@@ -270,7 +271,7 @@ export default function Navbar() {
 
                     <button
                       onClick={() => {
-                        alert("Logging out...");
+                        showToast("Signing out of your session…", "info");
                         setShowProfileMenu(false);
                       }}
                       className="w-full text-left px-4 py-2 hover:bg-red-50 dark:hover:bg-red-950/20 text-red-600 dark:text-red-400 flex items-center space-x-2 transition-colors"
@@ -285,8 +286,10 @@ export default function Navbar() {
 
             {/* Mobile Hamburger menu */}
             <button
+              type="button"
               onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className="p-2 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-cyber-yellow transition-colors hover:bg-slate-100 dark:hover:bg-cyber-gray rounded-md md:hidden"
+              aria-label={isMobileOpen ? "Close menu" : "Open menu"}
+              className={`p-2 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-cyber-yellow transition-colors hover:bg-slate-100 dark:hover:bg-cyber-gray rounded-md md:hidden ${focusRing}`}
             >
               {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>

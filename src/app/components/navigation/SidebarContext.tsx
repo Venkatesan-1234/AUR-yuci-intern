@@ -41,6 +41,8 @@ interface SidebarContextType {
   handleToggleCompare: (uniId: string) => void;
   handleRemoveCompare: (uniId: string) => void;
   handleClearCompare: () => void;
+  isChatOpen: boolean;
+  setIsChatOpen: (val: boolean) => void;
 }
 
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
@@ -56,9 +58,10 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // State initialization
   const [isCollapsed, setIsCollapsedState] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark"); // Default to dark futuristic theme
+  const [theme, setTheme] = useState<"dark" | "light">("light");
   const [filters, setFilters] = useState<FilterState>(initialFilters);
   const [selectedUniIds, setSelectedUniIds] = useState<string[]>([]);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   // Read localStorage for isCollapsed and theme (safe for SSR)
   useEffect(() => {
@@ -72,16 +75,15 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (savedTheme === "dark" || savedTheme === "light") {
         setTheme(savedTheme);
       } else {
-        // Default to dark futuristic
-        setTheme("dark");
+        setTheme("light");
       }
 
       const savedCompared = localStorage.getItem("compared_uni_ids");
       if (savedCompared) {
         try {
           setSelectedUniIds(JSON.parse(savedCompared));
-        } catch (e) {
-          console.error(e);
+        } catch (error) {
+          console.error(error);
         }
       }
     }
@@ -92,13 +94,16 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
       const next = prev.includes(uniId)
         ? prev.filter((id) => id !== uniId)
         : [...prev, uniId];
+
       if (next.length > 4) {
         alert("You can compare a maximum of 4 universities at a time.");
         return prev;
       }
+
       if (typeof window !== "undefined") {
         localStorage.setItem("compared_uni_ids", JSON.stringify(next));
       }
+
       return next;
     });
   };
@@ -164,7 +169,7 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
     if (view !== "profile") {
       current.delete("id");
     }
-    router.push(`/?${current.toString()}`);
+    router.push(`?${current.toString()}`);
     setIsMobileOpen(false); // Close mobile drawer when navigating
   };
 
@@ -177,7 +182,7 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
       current.set("view", "rankings");
       current.delete("id");
     }
-    router.push(`/?${current.toString()}`);
+    router.push(`?${current.toString()}`);
   };
 
   // Reset filters helper
@@ -209,6 +214,8 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
         handleToggleCompare,
         handleRemoveCompare,
         handleClearCompare,
+        isChatOpen,
+        setIsChatOpen,
       }}
     >
       {children}
