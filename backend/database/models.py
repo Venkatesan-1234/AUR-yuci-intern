@@ -208,7 +208,7 @@ class UniversityMetric(Base):
     university = relationship("University", back_populates="metrics")
 
     def __repr__(self) -> str:
-        return f"<UniversityMetrics university_id={self.university_id}>"
+        return f"<UniversityMetric university_id={self.university_id}>"
     
 
 class Course(Base):
