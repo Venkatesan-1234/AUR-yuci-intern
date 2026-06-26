@@ -38,6 +38,7 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [isCollapsed, setIsCollapsedState] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("light");
+ // const [filters, setFilters] = useState<FilterState>(initialFilters);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUniIds, setSelectedUniIds] = useState<string[]>([]);
   const [isChatOpen, setIsChatOpen] = useState(false);

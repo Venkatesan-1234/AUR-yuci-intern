@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect, useDeferredValue } from "react";
+import { motion } from "framer-motion";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   useReactTable,
@@ -319,25 +320,51 @@ export default function RankingsEngine({
         cell: ({ row }) => {
           const isSelected = selectedUniIds.includes(row.original.id);
           return (
-            <button
-              type="button"
-              onClick={() => onToggleCompare(row.original.id)}
-              className={`aur-btn-ghost aur-focus-ring ${focusRing} ${
-                isSelected ? "aur-btn-ghost--active" : ""
-              }`}
-            >
-              {isSelected ? (
-                <>
-                  <CheckSquare className="h-3.5 w-3.5 text-amber-700" />
-                  <span className="text-[10px]">Added</span>
-                </>
-              ) : (
-                <>
-                  <Square className="h-3.5 w-3.5" />
-                  <span className="text-[10px]">Compare</span>
-                </>
-              )}
-            </button>
+            <div className="flex items-center space-x-2">
+              <motion.button
+                onClick={() => onToggleCompare(row.original.id)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className="flex items-center space-x-1 text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-slate-100 border border-slate-900 dark:border-slate-600 px-2 py-1 hover:bg-slate-50 dark:hover:bg-cyber-gray transition-colors"
+              >
+                {isSelected ? (
+                  <>
+                    <CheckSquare className="h-3 w-3 text-amber-700 dark:text-cyber-yellow" />
+                    <span className="text-[9px]">Added</span>
+                  </>
+                ) : (
+                  <>
+                    <Square className="h-3 w-3 text-slate-900 dark:text-slate-400" />
+                    <span className="text-[9px]">Compare</span>
+                  </>
+                )}
+              </motion.button>
+
+              {/* <motion.button
+                onClick={() => onToggleSave(row.original.id)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className={`flex items-center space-x-1 text-xs font-semibold uppercase tracking-wider border px-2 py-1 transition-colors ${
+                  isSaved 
+                    ? "text-emerald-800 dark:text-emerald-400 border-emerald-700 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20" 
+                    : "text-slate-900 dark:text-slate-100 border-slate-900 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-cyber-gray"
+                }`}
+              >
+                {isSaved ? (
+                  <>
+                    <Bookmark className="h-3 w-3 fill-emerald-700 dark:fill-emerald-400" />
+                    <span className="text-[9px]">Saved</span>
+                  </>
+                ) : (
+                  <>
+                    <Bookmark className="h-3 w-3" />
+                    <span className="text-[9px]">Save</span>
+                  </>
+                )}
+              </motion.button> */}
+            </div>
           );
         },
       },

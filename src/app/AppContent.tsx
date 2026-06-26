@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
@@ -9,6 +9,7 @@ import MobileMenu from "./components/mobile/MobileMenu";
 import Homepage from "./components/Homepage";
 import RankingsEngine from "./components/RankingsEngine";
 import ComparisonDock from "./components/ComparisonDock";
+import UniversitiesList from "./components/UniversitiesList";
 import UniversityProfile from "./components/UniversityProfile";
 import Footer from "./components/Footer";
 import FloatingChatAssistant from "./components/FloatingChatAssistant";
@@ -21,18 +22,17 @@ export default function AppContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
-  const {
-    activeView,
-    handleViewChange,
-    selectedUniId,
-    setSelectedUniId,
-    selectedUniIds,
-    handleToggleCompare,
-    handleRemoveCompare,
-    handleClearCompare,
-    theme,
-  } = useSidebar();
+const {
+  activeView,
+  handleViewChange,
+  selectedUniId,
+  setSelectedUniId,
+  selectedUniIds,
+  handleToggleCompare,
+  handleRemoveCompare,
+  handleClearCompare,
+  theme,
+} = useSidebar();
 
   const showSidebar = pathname !== "/" || activeView !== "home";
 
@@ -51,12 +51,6 @@ export default function AppContent() {
   // A key to force AnimatePresence re-mount on view change
   const viewKey = view + (id ?? "");
 
-  const handleToggleSave = (uniId: string) => {
-    setSavedUniIds((prev) =>
-      prev.includes(uniId) ? prev.filter((id) => id !== uniId) : [...prev, uniId]
-    );
-  };
-
   const handleUniversitySelect = (uniId: string) => {
     setSelectedUniId(uniId);
   };
@@ -69,8 +63,16 @@ export default function AppContent() {
     router.push(`/blogs/${article.id}`);
   };
 
-  // Get selected universities for Saved view
-  const savedUniversities = MOCK_UNIVERSITIES.filter((u) => savedUniIds.includes(u.id));
+  const handleToggleSave = (uniId: string) => {
+    setSavedUniIds((prev) => {
+      if (prev.includes(uniId)) {
+        return prev.filter((id) => id !== uniId);
+      }
+      return [...prev, uniId];
+    });
+  };
+
+  const savedUniversities = MOCK_UNIVERSITIES.filter((university) => savedUniIds.includes(university.id));
 
   return (
     <div className={`${view === "home" ? "bg-gradient-to-b from-amber-50/50 via-white to-blue-50" : "aur-page"} flex min-h-screen flex-col transition-colors duration-300 ${
@@ -105,7 +107,16 @@ export default function AppContent() {
             />
           )}
 
-          {view === "rankings" && (
+          {activeView === "universities" && (
+            <UniversitiesList
+              onUniversitySelect={handleUniversitySelect}
+              onViewChange={handleViewChange}
+              savedUniIds={savedUniIds}
+              onToggleSave={handleToggleSave}
+            />
+          )}
+
+          {activeView === "rankings" && (
             <RankingsEngine
               searchQuery={searchQuery}
               onSearchQueryChange={setSearchQuery}
@@ -115,9 +126,9 @@ export default function AppContent() {
             />
           )}
 
-          {view === "profile" && id && (
+          {activeView === "profile" && selectedUniId && (
             <UniversityProfile
-              universityId={id}
+              universityId={selectedUniId}
               onBack={handleBackToRankings}
               onViewChange={handleViewChange}
               savedUniIds={savedUniIds}
@@ -125,12 +136,10 @@ export default function AppContent() {
             />
           )}
 
-          {/* Analytics Dashboard */}
-          {view === "analytics" && <AnalyticsDashboard />}
+          {activeView === "analytics" && <AnalyticsDashboard />}
 
-          {/* 2. Saved Items Mock Panel */}
-          {view === "saved" && (
-            <div className="w-full mx-auto w-full p-6 border border-slate-200 dark:border-cyber-border rounded-xl bg-slate-50/50 dark:bg-cyber-dark/40 shadow-sm space-y-6 animate-fadeIn">
+          {activeView === "saved" && (
+            <div className="w-full mx-auto p-6 border border-slate-200 dark:border-cyber-border rounded-xl bg-slate-50/50 dark:bg-cyber-dark/40 shadow-sm space-y-6 animate-fadeIn">
               <div>
                 <span className="text-[10px] uppercase font-bold tracking-widest text-amber-700 dark:text-cyber-yellow">
                   Personal Database
@@ -187,9 +196,8 @@ export default function AppContent() {
             </div>
           )}
 
-          {/* 3. Settings Mock Panel */}
-          {view === "settings" && (
-            <div className="w-full mx-auto w-full p-6 border border-slate-200 dark:border-cyber-border rounded-xl bg-slate-50/50 dark:bg-cyber-dark/40 shadow-sm space-y-6 animate-fadeIn">
+          {activeView === "settings" && (
+            <div className="w-full mx-auto p-6 border border-slate-200 dark:border-cyber-border rounded-xl bg-slate-50/50 dark:bg-cyber-dark/40 shadow-sm space-y-6 animate-fadeIn">
               <div>
                 <span className="text-[10px] uppercase font-bold tracking-widest text-amber-700 dark:text-cyber-yellow">
                   System Diagnostics
@@ -202,7 +210,6 @@ export default function AppContent() {
                 </p>
               </div>
 
-              {/* Toggles List */}
               <div className="space-y-4 max-w-xl">
                 {[
                   {
@@ -236,8 +243,6 @@ export default function AppContent() {
                         {option.desc}
                       </span>
                     </div>
-
-                    {/* Switch Button */}
                     <button
                       onClick={() => option.setter(!option.state)}
                       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
@@ -256,7 +261,6 @@ export default function AppContent() {
                 ))}
               </div>
 
-              {/* Reset Database Button */}
               <div className="pt-4 border-t border-slate-200 dark:border-slate-800 max-w-xl">
                 <div className="flex items-center space-x-2 text-amber-700 dark:text-cyber-yellow mb-2">
                   <ShieldAlert className="h-4.5 w-4.5" />
@@ -276,13 +280,11 @@ export default function AppContent() {
               </div>
             </div>
           )}
-
-            </motion.div>
+                      </motion.div>
           </AnimatePresence>
         </main>
       </div>
 
-      {/* Mobile Responsive Navigation Drawer & Bottom Bar */}
       <MobileMenu showSidebar={showSidebar} />
 
       <ComparisonDock
@@ -294,11 +296,8 @@ export default function AppContent() {
 
       <FloatingChatAssistant />
 
-      <footer className="border-t border-slate-200 dark:border-cyber-border bg-slate-50 dark:bg-cyber-dark/80 py-8 transition-colors duration-200">
-        <div className="mx-auto max-w-full px-4 sm:px-6 lg:px-8 text-center text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500">
-          © 2026 Asia University Rankings | Official Analytical Data Engine
-        </div>
-      </footer>
+      <Footer />
+
     </div>
   );
 }

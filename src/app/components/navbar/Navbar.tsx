@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Search, Bell, Sun, Moon, Menu, X, ChevronDown, User, Shield, LogOut } from "lucide-react";
+import Image from "next/image";
+import { Search, Bell, Sun, Moon, Menu, X, ChevronDown, User, Shield, LogOut, Bot } from "lucide-react";
 import { useSidebar } from "../navigation/SidebarContext";
 import { useToast } from "../feedback/ToastContext";
 import { TOP_NAV_LINKS } from "../navigation/config";
@@ -74,20 +75,16 @@ export default function Navbar({ showSidebar = true }: NavbarProps) {
             onClick={() => handleViewChange("home")}
             className="flex cursor-pointer items-center space-x-3 text-slate-900 dark:text-white shrink-0 group"
           >
-            <div className="flex h-10 w-10 items-center justify-center border-2 border-slate-900 bg-slate-900 text-white font-serif text-xl font-bold dark:border-cyber-yellow dark:bg-transparent dark:text-cyber-yellow dark:shadow-[0_0_10px_rgba(234,179,8,0.2)] group-hover:scale-105 transition-transform duration-200">
-              A
-            </div>
-            <div className="hidden sm:block">
-              <h1 className="font-serif text-md font-bold leading-tight tracking-tight dark:font-sans dark:tracking-wider">
-                ASIA UNIVERSITY{" "}
-                <span className="text-amber-700 dark:text-cyber-yellow font-sans text-xs font-semibold tracking-widest uppercase ml-0.5">
-                  RANKINGS
-                </span>
-              </h1>
-              <p className="text-[9px] uppercase tracking-widest text-slate-400 dark:text-slate-500 font-medium">
-                Futuristic Analytics Engine
-              </p>
-            </div>
+            <Image
+              src="/aur-logo.jpg"
+              alt="Asia University Rankings"
+              width={458}
+              height={135}
+              className="h-[36px] sm:h-[42px] md:h-[46px] w-auto object-contain mix-blend-multiply dark:mix-blend-normal"
+              priority
+              quality={100}
+              unoptimized
+            />
           </div>
 
           {/* Navigation Links - Desktop */}
