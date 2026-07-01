@@ -1,7 +1,9 @@
+from typing import List
 from fastapi import APIRouter, HTTPException, Depends
 from database.connections import get_redis
 import redis.asyncio as aioredis
 import json
+from schemas import CountrySummary, CountryUniversitiesResponse
 
 router = APIRouter(prefix="/api/countries", tags=["Countries"])
 
