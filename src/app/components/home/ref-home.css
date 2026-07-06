@@ -1,6 +1,6 @@
-/* ═══════════════════════════════════════════════════════════
-   Homepage — Clean, Professional University Portal Theme
-   ═══════════════════════════════════════════════════════════ */
+﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   Homepage â€” Clean, Professional University Portal Theme
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .ref-home {
   --ref-bg: var(--background);
@@ -12,22 +12,68 @@
   --ref-accent: var(--aur-text);
   --ref-blue: #2563eb;
 
-  background-color: var(--background);
+/* â”€â”€ LIGHT MODE background â”€â”€ */
+  background-color: #ffffff;
+  background-image:
+    radial-gradient(circle, rgba(71, 85, 105, 0.18) 1px, transparent 1px),
+    radial-gradient(ellipse 70% 55% at 50% 100%, rgba(236, 72, 153, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 90% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 35% at 0% 10%, rgba(59, 130, 246, 0.07) 0%, transparent 60%);
+  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%;
+
   color: var(--ref-text);
   font-family: var(--font-sans), system-ui, sans-serif;
   transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
     color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* â”€â”€ DARK MODE background â”€â”€ */
+html.dark .ref-home {
+  background-color: #060609;
+  background-image:
+    /* white dot grid â€” whisper quiet */
+    radial-gradient(circle, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    /* single deep indigo ambient â€” bottom-left, large and slow */
+    radial-gradient(ellipse 90% 55% at 15% 100%, rgba(79, 70, 229, 0.28) 0%, transparent 65%);
+  background-size: 28px 28px, 100% 100%;
+}
+
+html.dark .ref-home {
+  --ref-bg: #050506;
+  --ref-surface: #0d0d11;
+  --ref-surface-2: #17171d;
+  --ref-surface-blue: rgba(37, 99, 235, 0.12);
+  --ref-border: rgba(234, 179, 8, 0.14);
+  --ref-yellow: #eab308;
+  --ref-yellow-dark: #facc15;
+  --ref-yellow-dim: rgba(234, 179, 8, 0.16);
+  --ref-yellow-bg: rgba(234, 179, 8, 0.08);
+  --ref-blue: #facc15;
+  --ref-blue-light: rgba(234, 179, 8, 0.22);
+  --ref-orange: #facc15;
+  --ref-orange-dim: rgba(234, 179, 8, 0.14);
+  --ref-text: #f8fafc;
+  --ref-muted: #94a3b8;
+  background:
+    radial-gradient(ellipse 70% 45% at 12% 0%, rgba(234, 179, 8, 0.12), transparent 58%),
+    radial-gradient(ellipse 60% 40% at 90% 8%, rgba(37, 99, 235, 0.1), transparent 52%),
+    linear-gradient(180deg, #050506 0%, #0d0d11 46%, #050506 100%);
+  color: var(--ref-text);
+}
+
+
 .ref-home * {
   border-color: var(--ref-border);
 }
 
-/* ── Sections ── */
+/* â”€â”€ Sections â”€â”€ */
 .ref-section {
   padding: 3rem 1.5rem;
   max-width: 100%;
   margin: 0 auto;
+}
+@media (max-width: 480px) {
+  .ref-section { padding: 2.25rem 1rem; }
 }
 @media (min-width: 1024px) {
   .ref-section {
@@ -35,7 +81,7 @@
   }
 }
 
-/* ── Cards ── */
+/* â”€â”€ Cards â”€â”€ */
 .ref-card {
   background: var(--ref-surface);
   border: 1px solid var(--ref-border);
@@ -56,7 +102,17 @@
   box-shadow: var(--aur-shadow);
 }
 
-/* ── Labels ── */
+html.dark .ref-card,
+html.dark .ref-card-light,
+html.dark .ref-live-sidebar,
+html.dark .ref-stat-item,
+html.dark .ref-analytics-card {
+  background: rgba(13, 13, 17, 0.92);
+  border-color: var(--ref-border);
+  color: var(--ref-text);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
 .ref-label {
   font-size: 10px;
   font-weight: 700;
@@ -65,7 +121,7 @@
   color: var(--aur-text-secondary);
 }
 
-/* ── Buttons ── */
+/* â”€â”€ Buttons â”€â”€ */
 .ref-btn-primary {
   display: inline-flex;
   align-items: center;
@@ -106,6 +162,19 @@
   border: 1px solid var(--aur-border-strong);
   transition: all 0.2s ease;
 }
+
+html.dark .ref-btn-outline,
+html.dark .ref-live-sidebar__cta {
+  background: rgba(13, 13, 17, 0.88);
+  border-color: rgba(234, 179, 8, 0.28);
+  color: #facc15;
+}
+html.dark .ref-btn-outline:hover,
+html.dark .ref-live-sidebar__cta:hover {
+  background: rgba(234, 179, 8, 0.1);
+  border-color: #eab308;
+  color: #fef3c7;
+}
 .ref-btn-outline:hover {
   border-color: var(--aur-text);
   background: var(--aur-surface-hover);
@@ -115,12 +184,15 @@
   transform: translateY(0);
 }
 
-/* ── Hero ── */
+/* â”€â”€ Hero â”€â”€ */
 .ref-hero {
   position: relative;
   padding: 3rem 1.5rem 2.5rem;
   overflow: hidden;
   background: transparent;
+}
+@media (max-width: 480px) {
+  .ref-hero { padding: 2.25rem 1rem 1.75rem; }
 }
 @media (min-width: 1024px) {
   .ref-hero {
@@ -176,6 +248,25 @@
   justify-content: center;
 }
 
+@media (max-width: 480px) {
+  .ref-hero-visual { min-height: auto; }
+  .ref-map-stage { min-height: 240px; }
+  .ref-asia-map-svg { min-height: 230px; }
+  .ref-map-uni-card {
+    max-width: 8.75rem;
+    padding: 0.625rem 0.7rem;
+  }
+  .ref-map-uni-card__score { font-size: 1.05rem; }
+}
+
+html.dark .ref-map-stage {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 45%, rgba(234, 179, 8, 0.1), transparent),
+    linear-gradient(165deg, #111116 0%, #050506 54%, rgba(234, 179, 8, 0.08) 100%);
+  border-color: rgba(234, 179, 8, 0.18);
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.45);
+}
+
 .ref-asia-map-svg {
   width: 100%;
   height: 100%;
@@ -215,6 +306,23 @@ html.dark .ref-asia-map-svg {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+html.dark .ref-map-uni-card {
+  background: rgba(13, 13, 17, 0.95);
+  border-color: rgba(234, 179, 8, 0.18);
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.38),
+    0 0 0 1px rgba(234, 179, 8, 0.08);
+}
+html.dark .ref-map-uni-card__name,
+html.dark .ref-live-sidebar__title,
+html.dark .ref-live-sidebar__text {
+  color: #f8fafc;
+}
+html.dark .ref-map-uni-card__score,
+html.dark .ref-live-sidebar__cta {
+  color: #facc15;
 }
 .ref-map-uni-card:hover {
   transform: translateY(-2px);
@@ -266,7 +374,7 @@ html.dark .ref-map-uni-card:hover {
   color: var(--aur-text-muted);
 }
 
-/* ── Live Sidebar ── */
+/* â”€â”€ Live Sidebar â”€â”€ */
 .ref-live-sidebar {
   width: 100%;
   flex-shrink: 0;
@@ -355,12 +463,15 @@ html.dark .ref-map-uni-card:hover {
   transform: translateY(-1px);
 }
 
-/* ── Stat Bar ── */
+/* â”€â”€ Stat Bar â”€â”€ */
 .ref-stat-bar {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.875rem;
   margin-top: 2rem;
+}
+@media (max-width: 380px) {
+  .ref-stat-bar { grid-template-columns: 1fr; }
 }
 @media (min-width: 640px) {
   .ref-stat-bar {
@@ -382,7 +493,7 @@ html.dark .ref-map-uni-card:hover {
   transform: translateY(-1px);
 }
 
-/* ── Rankings Table ── */
+/* â”€â”€ Rankings Table â”€â”€ */
 .ref-table-wrap {
   overflow-x: auto;
   border-radius: 12px;
@@ -401,6 +512,18 @@ html.dark .ref-map-uni-card:hover {
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.06em;
+}
+
+html.dark .ref-table thead {
+  background: linear-gradient(180deg, rgba(234, 179, 8, 0.12) 0%, rgba(13, 13, 17, 0.96) 100%);
+  color: #facc15;
+}
+html.dark .ref-table th,
+html.dark .ref-table td {
+  border-bottom-color: var(--ref-border);
+}
+html.dark .ref-table tbody tr:hover {
+  background: rgba(234, 179, 8, 0.07);
 }
 .ref-table th,
 .ref-table td {
@@ -427,11 +550,14 @@ html.dark .ref-map-uni-card:hover {
   color: #dc2626;
 }
 
-/* ── Country Cards ── */
+/* â”€â”€ Country Cards â”€â”€ */
 .ref-country-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+}
+@media (max-width: 480px) {
+  .ref-country-grid { grid-template-columns: 1fr; }
 }
 @media (min-width: 768px) {
   .ref-country-grid {
@@ -455,6 +581,28 @@ html.dark .ref-map-uni-card:hover {
   display: block;
   width: 100%;
 }
+html.dark .ref-country-card--light {
+  background: linear-gradient(135deg, rgba(17, 17, 22, 0.98) 0%, rgba(5, 5, 6, 0.96) 100%);
+  border-color: var(--ref-border);
+  color: var(--ref-text);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.34);
+}
+html.dark .ref-country-card--light:hover {
+  border-color: color-mix(in srgb, var(--country-accent, var(--ref-yellow)) 40%, #eab308);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
+}
+.ref-country-card--light::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--aur-border-strong);
+  z-index: 3;
+  transition: background 0.3s ease;
+}
+
 .ref-country-card--light:hover {
   transform: translateY(-2px);
   border-color: var(--aur-text);
@@ -463,6 +611,14 @@ html.dark .ref-map-uni-card:hover {
 
 .ref-country-monument {
   display: none;
+}
+
+html.dark .ref-country-monument {
+  opacity: 0.42;
+  mix-blend-mode: screen;
+}
+html.dark .ref-country-monument::after {
+  background: linear-gradient(90deg, #0d0d11 0%, rgba(13, 13, 17, 0.65) 45%, transparent 100%);
 }
 
 .ref-country-body {
@@ -477,6 +633,15 @@ html.dark .ref-map-uni-card:hover {
   letter-spacing: 0.02em;
   color: var(--aur-text);
   line-height: 1.2;
+}
+
+html.dark .ref-country-code,
+html.dark .ref-country-name {
+  color: #f8fafc;
+}
+html.dark .ref-country-meta,
+html.dark .ref-country-top {
+  color: var(--ref-muted);
 }
 .ref-country-monument-label {
   display: block;
@@ -514,9 +679,31 @@ html.dark .ref-map-uni-card:hover {
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  margin-top: 0.25rem;
 }
 
-/* ── Methodology Donut ── */
+@media (max-width: 480px) {
+  .ref-country-card { min-height: 148px; }
+  .ref-country-monument { width: 42%; opacity: 0.75; }
+  .ref-country-body { max-width: 64%; min-height: 145px; padding: 1rem; }
+  .ref-country-monument-label { font-size: 8px; }
+}
+
+@media (max-width: 480px) {
+  .ref-home form {
+    flex-direction: column;
+  }
+  .ref-home form input[type="search"] {
+    min-height: 3rem;
+  }
+  .ref-home form .ref-btn-primary {
+    width: 100%;
+    justify-content: center;
+    border-radius: 0;
+  }
+
+}
+
 .ref-donut {
   width: 150px;
   height: 150px;
@@ -538,13 +725,16 @@ html.dark .ref-map-uni-card:hover {
   border-radius: 50%;
 }
 
-/* ── Article Tabs ── */
+html.dark .ref-donut::after {
+  background: #0d0d11;
+}
+
 .ref-article-tabs button.active {
   color: var(--aur-text);
   border-bottom: 2px solid var(--aur-text);
 }
 
-/* ── Analytics ── */
+/* â”€â”€ Analytics â”€â”€ */
 .ref-analytics-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -573,7 +763,7 @@ html.dark .ref-map-uni-card:hover {
   box-shadow: var(--aur-shadow);
 }
 
-/* ── Pulse Ticker ── */
+/* â”€â”€ Pulse Ticker â”€â”€ */
 .ref-pulse-ticker {
   overflow: hidden;
   white-space: nowrap;
@@ -581,6 +771,12 @@ html.dark .ref-map-uni-card:hover {
   border-top: 1px solid var(--aur-border);
   border-bottom: 1px solid var(--aur-border);
   padding: 0.75rem 0;
+}
+
+html.dark .ref-pulse-ticker {
+  background: linear-gradient(90deg, rgba(234, 179, 8, 0.08) 0%, rgba(37, 99, 235, 0.06) 50%, rgba(234, 179, 8, 0.08) 100%);
+  border-top-color: rgba(234, 179, 8, 0.18);
+  border-bottom-color: rgba(234, 179, 8, 0.18);
 }
 .ref-pulse-track {
   display: inline-flex;
@@ -596,7 +792,7 @@ html.dark .ref-map-uni-card:hover {
   }
 }
 
-/* ── CTA Banner ── */
+/* â”€â”€ CTA Banner â”€â”€ */
 .ref-cta-banner {
   position: relative;
   border-radius: 16px;
@@ -618,7 +814,21 @@ html.dark .ref-map-uni-card:hover {
   z-index: 2;
 }
 
-/* ── Footer ── */
+@media (max-width: 480px) {
+  .ref-cta-banner {
+    min-height: auto;
+    border-radius: 14px;
+  }
+}
+
+html.dark .ref-cta-banner {
+  background:
+    linear-gradient(135deg, rgba(5, 5, 6, 0.92) 0%, rgba(13, 13, 17, 0.95) 100%),
+    url("https://images.unsplash.com/photo-1562774053-f5a02f6da861?auto=format&fit=crop&w=1200&q=80") center/cover;
+  border-color: rgba(234, 179, 8, 0.18);
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.4);
+}
+
 .ref-footer-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -630,7 +840,7 @@ html.dark .ref-map-uni-card:hover {
   }
 }
 
-/* ── Section Alt Background ── */
+/* â”€â”€ Section Alt Background â”€â”€ */
 .ref-section-alt {
   background: var(--aur-surface-2);
   border-top: 1px solid var(--aur-border);
