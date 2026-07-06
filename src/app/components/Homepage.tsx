@@ -9,13 +9,12 @@ import {
   ChevronRight,
   MapPin,
   Globe2,
+  ArrowRight,
   BarChart3,
   Database,
   Clock,
   TrendingUp,
   TrendingDown,
-  ArrowRight,
-  Bell,
   Building2,
   LineChart,
   Activity,
@@ -23,7 +22,6 @@ import {
 } from "lucide-react";
 import { FEATURED_ARTICLES, University, Article } from "../data";
 import { useUniversityData } from "./data/UniversityDataProvider";
-import { AsiaMapNetwork, MapUniversityCards } from "./home/AsiaMapHero";
 import "./home/ref-home.css";
 
 /* ── Reusable scroll-reveal wrapper ── */
@@ -733,50 +731,6 @@ export default function Homepage({
             </div>
           </div>
 
-          <div
-            className="ref-hero-visual"
-            
-            
-            
-          >
-            <div className="ref-map-stage">
-              <AsiaMapNetwork />
-              <MapUniversityCards
-                universities={mapUniversities}
-                onUniversitySelect={onUniversitySelect}
-              />
-            </div>
-
-            <aside className="ref-live-sidebar">
-              <h3 className="ref-live-sidebar__title">
-                <span className="text-amber-500">L</span>ive Updates
-              </h3>
-              <ul className="ref-live-sidebar__list">
-                {LIVE_UPDATES.map((item) => (
-                  <li key={item.text} className="ref-live-sidebar__item">
-                    <span
-                      className="ref-live-sidebar__icon"
-                      style={{ background: `${item.color}18`, color: item.color }}
-                    >
-                      <Bell className="h-3.5 w-3.5" />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="ref-live-sidebar__text">{item.text}</p>
-                      <p className="ref-live-sidebar__time">{item.time}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <button
-                type="button"
-                className="ref-live-sidebar__cta"
-                onClick={() => onViewChange("rankings")}
-              >
-                View All Updates
-                <ArrowRight className="h-3.5 w-3.5" />
-              </button>
-            </aside>
-          </div>
         </div>
       </section>
 
