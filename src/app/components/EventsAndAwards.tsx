@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { Calendar, Award, MapPin, Users, ArrowRight, ArrowLeft, Clock, User } from "lucide-react";
+import { Calendar, Award, MapPin, Users, ArrowRight, ArrowLeft, Clock, User, CheckCircle, Loader2 } from "lucide-react";
 
 export default function EventsAndAwards() {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+  const [registrationStatus, setRegistrationStatus] = useState<"idle" | "submitting" | "success">("idle");
 
   const events = [
     {
@@ -67,6 +69,21 @@ export default function EventsAndAwards() {
 
   const selectedEvent = events.find(e => e.id === selectedEventId);
 
+  const handleBack = () => {
+    setSelectedEventId(null);
+    setShowRegistrationForm(false);
+    setRegistrationStatus("idle");
+  };
+
+  const handleRegisterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setRegistrationStatus("submitting");
+    // Simulate network latency for submission
+    setTimeout(() => {
+      setRegistrationStatus("success");
+    }, 1500);
+  };
+
   return (
     <div className="aur-rankings-shell mx-auto w-full max-w-[1600px] px-3 sm:px-5 lg:px-8 py-6 sm:py-8 font-sans flex-grow">
       
@@ -127,7 +144,7 @@ export default function EventsAndAwards() {
       ) : (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
           <button 
-            onClick={() => setSelectedEventId(null)}
+            onClick={handleBack}
             className="mb-6 inline-flex items-center text-xs font-bold uppercase tracking-wider text-[var(--aur-text-muted)] hover:text-[var(--aur-text)] transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Events
@@ -150,36 +167,108 @@ export default function EventsAndAwards() {
               <h2 className="text-3xl md:text-5xl font-bold text-[var(--aur-text)] leading-tight mb-6">
                 {selectedEvent.title}
               </h2>
-              <a 
-                href={selectedEvent.applicationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="aur-btn-primary px-8 py-3 text-sm font-bold uppercase tracking-wider inline-flex items-center justify-center text-center"
-              >
-                Register Now
-              </a>
+              {!showRegistrationForm && registrationStatus !== "success" && (
+                <button 
+                  onClick={() => setShowRegistrationForm(true)}
+                  className="aur-btn-primary px-8 py-3 text-sm font-bold uppercase tracking-wider inline-flex items-center justify-center text-center"
+                >
+                  Register Now
+                </button>
+              )}
             </div>
             
             <div className="p-8 md:p-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
               <div className="lg:col-span-2">
-                <h3 className="text-xl font-bold text-[var(--aur-text)] mb-4">About this Event</h3>
-                <p className="text-[var(--aur-text-secondary)] leading-relaxed mb-8">
-                  {selectedEvent.detailedDescription}
-                </p>
-                
-                <h3 className="text-xl font-bold text-[var(--aur-text)] mb-4">Agenda</h3>
-                <div className="space-y-4">
-                  {selectedEvent.agenda.map((item, idx) => (
-                    <div key={idx} className="flex gap-4 p-4 rounded-xl border border-[var(--aur-border)] bg-[var(--aur-surface-2)]">
-                      <div className="text-[11px] font-mono text-[var(--aur-text-muted)] flex-shrink-0 pt-1 flex items-center">
-                        <Clock className="w-3 h-3 mr-1.5" /> {item.time}
+                {showRegistrationForm ? (
+                  <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                    <h3 className="text-xl font-bold text-[var(--aur-text)] mb-6 flex items-center gap-2">
+                      <Users className="w-5 h-5 text-amber-600 dark:text-cyber-yellow" /> Complete Your Registration
+                    </h3>
+                    
+                    {registrationStatus === "success" ? (
+                      <div className="p-8 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/30 flex flex-col items-center text-center">
+                        <div className="w-16 h-16 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mb-4">
+                          <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
+                        </div>
+                        <h4 className="text-xl font-bold text-green-800 dark:text-green-300 mb-2">Registration Confirmed</h4>
+                        <p className="text-green-700 dark:text-green-400/80 text-sm max-w-md">
+                          You have successfully registered for {selectedEvent.title}. A confirmation email has been sent to your inbox.
+                        </p>
                       </div>
-                      <div className="font-medium text-[var(--aur-text)]">
-                        {item.title}
-                      </div>
+                    ) : (
+                      <form onSubmit={handleRegisterSubmit} className="space-y-5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                          <div className="space-y-1.5">
+                            <label className="text-xs font-bold uppercase tracking-wider text-[var(--aur-text-muted)]">Full Name</label>
+                            <input required type="text" className="aur-input w-full px-4 py-2.5 text-sm" placeholder="Dr. John Doe" />
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-xs font-bold uppercase tracking-wider text-[var(--aur-text-muted)]">Email Address</label>
+                            <input required type="email" className="aur-input w-full px-4 py-2.5 text-sm" placeholder="j.doe@university.edu" />
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                          <div className="space-y-1.5">
+                            <label className="text-xs font-bold uppercase tracking-wider text-[var(--aur-text-muted)]">Job Title</label>
+                            <input required type="text" className="aur-input w-full px-4 py-2.5 text-sm" placeholder="e.g. Dean of Admissions" />
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-xs font-bold uppercase tracking-wider text-[var(--aur-text-muted)]">Organization</label>
+                            <input required type="text" className="aur-input w-full px-4 py-2.5 text-sm" placeholder="e.g. Tokyo Institute of Technology" />
+                          </div>
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <label className="text-xs font-bold uppercase tracking-wider text-[var(--aur-text-muted)]">Special Requirements</label>
+                          <textarea className="aur-input w-full px-4 py-2.5 text-sm min-h-[100px] resize-none" placeholder="Dietary needs, accessibility requirements, etc."></textarea>
+                        </div>
+                        
+                        <div className="pt-4 flex items-center gap-4">
+                          <button 
+                            type="button"
+                            onClick={() => setShowRegistrationForm(false)}
+                            className="aur-btn-ghost px-6 py-2.5 text-xs font-bold uppercase tracking-wider"
+                          >
+                            Cancel
+                          </button>
+                          <button 
+                            type="submit"
+                            disabled={registrationStatus === "submitting"}
+                            className="aur-btn-primary px-8 py-2.5 text-xs font-bold uppercase tracking-wider inline-flex items-center"
+                          >
+                            {registrationStatus === "submitting" ? (
+                              <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Processing</>
+                            ) : (
+                              "Confirm Registration"
+                            )}
+                          </button>
+                        </div>
+                      </form>
+                    )}
+                  </div>
+                ) : (
+                  <div className="animate-in fade-in duration-300">
+                    <h3 className="text-xl font-bold text-[var(--aur-text)] mb-4">About this Event</h3>
+                    <p className="text-[var(--aur-text-secondary)] leading-relaxed mb-8">
+                      {selectedEvent.detailedDescription}
+                    </p>
+                    
+                    <h3 className="text-xl font-bold text-[var(--aur-text)] mb-4">Agenda</h3>
+                    <div className="space-y-4">
+                      {selectedEvent.agenda.map((item, idx) => (
+                        <div key={idx} className="flex gap-4 p-4 rounded-xl border border-[var(--aur-border)] bg-[var(--aur-surface-2)]">
+                          <div className="text-[11px] font-mono text-[var(--aur-text-muted)] flex-shrink-0 pt-1 flex items-center">
+                            <Clock className="w-3 h-3 mr-1.5" /> {item.time}
+                          </div>
+                          <div className="font-medium text-[var(--aur-text)]">
+                            {item.title}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                )}
               </div>
               
               <div>
