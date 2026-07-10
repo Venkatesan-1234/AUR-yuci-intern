@@ -64,7 +64,7 @@ async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)):
 
     parts = full_name.split(" ", 1)
     first_name = parts[0]
-    last_name = parts[1].strip() if len(parts) > 1 else ""
+    last_name = parts[1].strip() if len(parts) > 1 else "-"
 
     user = User(
         first_name=first_name,
