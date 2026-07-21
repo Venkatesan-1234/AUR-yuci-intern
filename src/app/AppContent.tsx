@@ -29,6 +29,7 @@ import { Bookmark, ShieldAlert } from "lucide-react";
 import Sidebar from "./components/sidebar/Sidebar";
 import { API_BASE_URL } from "./lib/universities";
 import DiscoveryJoinModal from "./components/DiscoveryJoinModal";
+import ProfileSection from "./components/ProfileSection";
 
 export default function AppContent() {
   const router = useRouter();
@@ -201,7 +202,7 @@ useEffect(() => {
   const savedUniversities = universities.filter((u) => savedUniIds.includes(u.id));
 
   // Show sidebar for non-home views
-  const showSidebar = view !== "home" && view !== "login";
+  const showSidebar = view !== "home" && view !== "login" && view !== "admin";
   useEffect(() => {
     const syncAuth = () => {
       setIsAuthenticated(Boolean(sessionStorage.getItem("aur_access_token")));
@@ -245,10 +246,10 @@ useEffect(() => {
     }
   };
 
+
   return (
     <div className={`${view === "home" ? "bg-gradient-to-b from-amber-50/50 via-white to-blue-50 dark:bg-none dark:bg-cyber-black" : "aur-page"} flex min-h-screen flex-col transition-colors duration-300`}>
       {/* Top Navigation Bar */}
-      {view !== "login" && <Navbar />}
       {view !== "login" && view !== "admin" && (
         <Navbar
           isAuthenticated={isAuthenticated}
@@ -338,6 +339,8 @@ useEffect(() => {
           {view === "login" && (
             <Login initialMode={searchParams.get("mode") === "signup" ? "signup" : "login"} />
           )}
+
+          {view === "profile" && <ProfileSection />}
 
           {/* User Dashboard (Combines Saved & Settings) */}
           {view === "settings" && (
