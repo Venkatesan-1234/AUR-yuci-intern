@@ -14,14 +14,11 @@ import UniversityProfile from "./components/UniversityProfile";
 import Footer from "./components/Footer";
 import FloatingChatAssistant from "./components/FloatingChatAssistant";
 import AnalyticsDashboard from "./components/AnalyticsDashboard";
-import AdminConsole from "./components/AdminConsole";
 import Login from "./components/Login";
 import UserDashboard from "./components/UserDashboard";
-import UniversitiesList from "./components/UniversitiesList";
 import Methodology from "./components/Methodology";
 import EventsAndAwards from "./components/EventsAndAwards";
 import FacultyStudentAwards from "./components/FacultyStudentAwards";
-import Membership from "./components/Membership";
 import BlogForm from "./components/blog/BlogForm";
 import { useSidebar } from "./components/navigation/SidebarContext";
 import { useUniversityData } from "./components/data/UniversityDataProvider";
@@ -200,6 +197,8 @@ useEffect(() => {
   // Get selected universities for Saved view
   const savedUniversities = universities.filter((u) => savedUniIds.includes(u.id));
 
+  // Show sidebar for non-home views
+  const showSidebar = view !== "home" && view !== "login";
   useEffect(() => {
     const syncAuth = () => {
       setIsAuthenticated(Boolean(sessionStorage.getItem("aur_access_token")));
@@ -248,6 +247,7 @@ useEffect(() => {
   return (
     <div className={`${view === "home" ? "bg-gradient-to-b from-amber-50/50 via-white to-blue-50 dark:bg-none dark:bg-cyber-black" : "aur-page"} flex min-h-screen flex-col transition-colors duration-300`}>
       {/* Top Navigation Bar */}
+      {view !== "login" && <Navbar />}
       {view !== "login" && view !== "admin" && (
         <Navbar
           isAuthenticated={isAuthenticated}
@@ -270,7 +270,7 @@ useEffect(() => {
         {/* Main Content Area — Full Width */}
         <main
           className={`flex-1 flex flex-col min-w-0 pb-20 md:pb-0 ${
-            view === "home" || view === "login" || view === "admin" ? "p-0" : "px-4 pt-4 lg:px-8 lg:pt-8"
+            view === "home" || view === "login" ? "p-0" : "px-4 pt-4 lg:px-8 lg:pt-8"
           }`}
           style={{ isolation: "isolate" }}
         >
@@ -289,15 +289,6 @@ useEffect(() => {
               onUniversitySelect={handleUniversitySelect}
               onArticleSelect={handleArticleSelect}
               onViewChange={handleViewChange}
-            />
-          )}
-
-          {view === "universities" && (
-            <UniversitiesList
-              onUniversitySelect={handleUniversitySelect}
-              onViewChange={handleViewChange}
-              savedUniIds={savedUniIds}
-              onToggleSave={handleToggleSave}
             />
           )}
 
@@ -336,17 +327,11 @@ useEffect(() => {
           {/* Methodology */}
           {view === "methodology" && <Methodology />}
 
-          {/* Membership */}
-          {view === "membership" && <Membership />}
-
           {/* Events & Awards */}
           {view === "events" && <EventsAndAwards />}
 
           {/* Faculty & Student Awards */}
           {view === "faculty-awards" && <FacultyStudentAwards />}
-
-          {/* Admin Console */}
-          {view === "admin" && <AdminConsole />}
 
           {/* Login View */}
           {view === "login" && (
@@ -388,6 +373,7 @@ useEffect(() => {
       </div>
 
       {/* Mobile Responsive Navigation Drawer & Bottom Bar */}
+      {view !== "login" && <MobileMenu />}
       {view !== "login" && view !== "admin" && (
         <MobileMenu
           isAuthenticated={isAuthenticated}
@@ -396,7 +382,7 @@ useEffect(() => {
         />
       )}
 
-      {view !== "login" && view !== "admin" && (
+      {view !== "login" && (
         <ComparisonDock
           selectedIds={selectedUniIds}
           onRemove={handleRemoveCompare}
@@ -405,7 +391,7 @@ useEffect(() => {
         />
       )}
 
-      {view !== "login" && view !== "admin" && <FloatingChatAssistant />}
+      {view !== "login" && <FloatingChatAssistant />}
 
       {authReady && !isAuthenticated && view === "home" && (
         <DiscoveryJoinModal
