@@ -105,10 +105,10 @@ function GithubIcon() {
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
-export default function Login() {
+export default function Login({ initialMode = "login" }: { initialMode?: "login" | "signup" }) {
   const { handleViewChange} = useSidebar();
 
-  const [isLogin, setIsLogin]             = useState(true);
+  const [isLogin, setIsLogin]             = useState(initialMode === "login");
   const [dir, setDir]                     = useState(1);
   const [email, setEmail]                 = useState("");
   const [password, setPassword]           = useState("");
@@ -187,7 +187,7 @@ export default function Login() {
         if (response.status === 401) throw new Error("Invalid credentials. Please try again.");
         if (response.status === 403) throw new Error("Account locked or access denied.");
         if (response.status === 429) throw new Error("Too many attempts. Please try again later.");
-        throw new Error(errorData.message || "An error occurred during authentication.");
+        throw new Error(errorData.detail || errorData.message || "An error occurred during authentication.");
       }
 
       const data = await response.json();
@@ -195,6 +195,7 @@ export default function Login() {
       // Store tokens (sessionStorage used here; swap to HttpOnly cookies server-side later for better security)
       sessionStorage.setItem("aur_access_token", data.access_token);
       sessionStorage.setItem("aur_refresh_token", data.refresh_token);
+      window.dispatchEvent(new Event("aur-auth-change"));
       localStorage.setItem("aur_logged_in", "true");
 
       handleViewChange("home");
