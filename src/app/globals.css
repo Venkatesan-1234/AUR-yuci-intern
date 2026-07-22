@@ -3,7 +3,7 @@
 @theme {
 
   /* Extremely Premium Matte Palette */
-  --color-matte-black: #7F56D9;
+  --color-matte-black: #050505;
   --color-matte-dark: #0a0a0a;
   --color-matte-surface: #121212;
   --color-matte-surface-2: #1a1a1a;
@@ -13,7 +13,7 @@
   /* Legacy aliases mapped to sophisticated neutrals */
   --color-cyber-yellow: #e5e5e5;
   --color-cyber-yellow-bright: #ffffff;
-  --color-cyber-black: #7F56D9;
+  --color-cyber-black: #000000;
   --color-cyber-dark: #0a0a0a;
   --color-cyber-gray: #121212;
   --color-cyber-border: rgba(255, 255, 255, 0.08);
